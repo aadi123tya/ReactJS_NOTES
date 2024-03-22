@@ -1,3 +1,70 @@
+import { createContext,useContext } from "react";
+
+export const ThemeContext = createContext({
+    themeMode:'light'
+    ,darkTheme:()=>{},
+    lightTheme:()=>{}
+})
+
+
+export const ThemeProvider = ThemeContext.Provider
+
+export default function useTheme()
+{
+    return useContext(ThemeContext)
+}
+
+
+//main.jsx
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <UserContextProvider value={{item,setname}}>
+ 
+    <RouterProvider router={router}/>
+  </UserContextProvider>,
+)
+
+//acces in other files
+import React from 'react'
+import useUserContext from '../context/context'
+
+function Error() {
+  const {item,setname} = useUserContext()
+  // where you define the function that which you filled in context api.
+  //with the same name
+  }
+
+
+// GitHub.jsx
+
+import React, { useEffect, useState } from 'react'
+import { useLoaderData } from "react-router-dom";
+function Github() {
+    // const [data,setData] = useState([])
+    // useEffect(()=>{
+    //     fetch('https://api.github.com/users/aadi123tya')
+    //     .then(Response=>Response.json())
+    //     .then(data=>{
+    //         setData(data)
+    //     })
+    // },[])
+const data  = useLoaderData()
+
+  return (
+    <div className="text-center bg-slate-400">GitHub Follower:{data.followers}
+    <img src={data.avatar_url} alt="Git picture" width={300} className=" "/></div>
+  )
+}
+
+export const rootloader =  async ()=>{
+  const response = await fetch('https://api.github.com/users/aadi123tya')
+  return response.json()
+}
+export default Github
+
+
+
+
 // react router main.jsx
 
 
