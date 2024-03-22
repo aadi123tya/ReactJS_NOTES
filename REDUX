@@ -1,0 +1,104 @@
+// ********************************Redux****************************************
+
+
+
+//STEP-1 Make a folder "app" and make a file "store.js".
+   
+   import {configureStore} from '@reduxjs/toolkit'
+
+   export const store = configureStore({})
+
+
+//STEP-2  create a folder in "src"  is "features" and inside the "features" folder create the file "todoSlices.js".
+
+	// in "todoSlices.js"
+	   
+	   
+	import { createSlice ,nanoid } from "@reduxjs/toolkit";
+
+// nanoid => generate the unique id.
+
+const initialState = {
+    todos:[{id:1,text:"hello world"}]
+}
+
+// slices is big version of the reducers.
+
+export const todoSlice = createSlice({
+    name:"todos"
+    ,initialState,
+    reducers:{
+    //  contains  Property or functions.
+        addTodo:(state,action)=>{
+            const todo = {
+                id:nanoid(),
+                text:action.payload
+                // payLoad is also an object.
+                // state -> initialState -> we get the todos  array.
+            }
+            state.todos.push(todo)
+        },
+        removeTodo:(state,action)=>{
+            state.todos = state.todos.filter((todo)=>todo.id!==action.payload)
+        }
+    // In contextApi we only declare a function without defination but here we define it.
+    }
+})
+
+// here we export two parts of the slices.
+// 1. reducers
+// 2. actions
+
+
+export const {addTodo,removeTodo} = todoSlice.actions
+
+
+//export default todoSlice.reducer
+		OR
+export const SliceReducer =  Slices.reducer		
+	
+//STEP-3 Goes in the store.js file.
+
+import {configureStore} from '@reduxjs/toolkit'
+import {SliceReducer} from '../features/todo/todoSlices'
+export const store = configureStore({
+    reducer:SliceReducer
+})
+
+//       STEP-4 App.jsx 
+
+	import { useState } from "react";
+
+import "./App.css";
+import AddTodo from "./component/Addtodo";
+import Todos from "./component/Todos";
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <h1>let read about redux toolkit </h1>
+      <AddTodo/>
+      <Todos/>
+    </>
+  );
+}
+
+export default App;
+
+
+// STEP-5 main.jsx
+	
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+import { Provider } from 'react-redux'
+import { store } from './app/store.js'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+)
